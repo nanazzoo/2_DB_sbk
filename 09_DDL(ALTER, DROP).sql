@@ -17,7 +17,7 @@
 -- [작성법]
 --  1) 추가: ALTER TABLE 테이블명 
 --			 ADD [CONSTRAINT 제약조건명] 제약조건(컬럼명)
---			 [REFERENCED 테이블명[(컬럼명)]]; <-- FK인 경우 추가
+--			 [REFERENCES 테이블명[(컬럼명)]]; <-- FK인 경우 추가
 
 --	2) 삭제: ALTER TABLE 테이블명
 --			 DROP CONSTRAINT 제약조건명;
