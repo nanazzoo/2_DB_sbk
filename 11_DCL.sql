@@ -9,7 +9,7 @@
 
 	1) 시스템 권한 : DB접속, 객체 생성 권한
 	
-		CRETAE SESSION   : 데이터베이스 접속 권한
+		CREATE SESSION   : 데이터베이스 접속 권한
 		CREATE TABLE     : 테이블 생성 권한
 		CREATE VIEW      : 뷰 생성 권한
 		CREATE SEQUENCE  : 시퀀스 생성 권한
