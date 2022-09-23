@@ -3,6 +3,10 @@
 
 -- 테이블 삭제
 DROP TABLE AR_MEMBER; 
+DROP TABLE AR_TANK;
+DROP TABLE AR_LIVESTOCK;
+DROP TABLE AR_PARAMETER;
+DROP TABLE AR_TODO_LIST;
 
 -- 조회
 SELECT * FROM AR_MEMBER;
@@ -28,11 +32,12 @@ VALUES(SEQ_MEMBER_NO.NEXTVAL, 'user05', 'pass05', '유저오', DEFAULT);
 -- 어항 정보 테이블 생성
 
 -- 테이블 삭제
-DROP TABLE AR_TANK;
+
 
 -- 테이블 조회
 SELECT * FROM AR_TANK;
 
+ROLLBACK;
 
 SELECT TANK_NO, TANK_NAME
 		FROM AR_TANK
@@ -42,17 +47,24 @@ SELECT TANK_NO, TANK_NAME
 -- 어항 샘플 데이터 생성
 	
 INSERT INTO AR_TANK 
-VALUES(1, 1, '내어항1', DEFAULT, '45큐브', 'K7 PRO', '하단섬프', '제오박, CV', '산호사');
+VALUES(1, 1, '내어항1', DEFAULT, '45큐브', 'K7 PRO', '하단섬프', '제오박, CV', '산호사', DEFAULT);
 INSERT INTO AR_TANK 
-VALUES(1, (SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '1')+1, '내어항2', DEFAULT, '35큐브', '썬라이트', '내부배면', '마이크로박터', '산호사');
+VALUES(1, (SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '1')+1, '내어항2', DEFAULT, '35큐브', '썬라이트', '내부배면', '마이크로박터', '산호사', DEFAULT);
 INSERT INTO AR_TANK 
-VALUES(2, 1, '내어항1', DEFAULT, '60큐브', '라데온', '하단섬프', '제오박, CV', '산호사');
+VALUES(2, 1, '내어항1', DEFAULT, '60큐브', '라데온', '하단섬프', '제오박, CV', '산호사', DEFAULT);
 INSERT INTO AR_TANK 
-VALUES(2, (SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '2')+1, '내어항2', DEFAULT, '4자어항', '오펙', '하단섬프', '제오빗 시스템', 'KZ 아라고나이트');
+VALUES(2, (SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '2')+1, '내어항2', DEFAULT, '4자어항', '오펙', '하단섬프', '제오빗 시스템', 'KZ 아라고나이트', DEFAULT);
 INSERT INTO AR_TANK 
-VALUES(3, 1, '내어항1', DEFAULT, '2자', 'K7 PRO', '하단섬프', '마이크로박터, 바이오퓨엘', '다크캐러빅');
+VALUES(3, (SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '3')+1, '내어항1', DEFAULT, '2자', 'K7 PRO', '하단섬프', '마이크로박터, 바이오퓨엘', '다크캐러빅', DEFAULT);
 
 SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '2'
+
+SELECT MAX(TANK_NO)
+		FROM AR_TANK
+		WHERE MEMBER_NO = 1
+		AND DELETE_FL = 'N';
+
+
 ------------------------------------------------------------------------------------------
 
 -- 생물 테이블 생성
@@ -66,15 +78,32 @@ SELECT * FROM AR_LIVESTOCK;
 
 -- 생물 샘플 데이터 삽입
 INSERT INTO AR_LIVESTOCK 
-VALUES(1, 1, 1, '물고기', '니모', 10000, 'F', SYSDATE, DEFAULT);
+VALUES(1, 3, 1, '물고기', '니모', 10000, 'F', SYSDATE, DEFAULT);
 INSERT INTO AR_LIVESTOCK 
-VALUES(1, 1, 2, '물고기', '옐로우탱', 60000, NULL, SYSDATE, DEFAULT);
+VALUES(1, 3, 2, '물고기', '옐로우탱', 60000, NULL, SYSDATE, DEFAULT);
 INSERT INTO AR_LIVESTOCK 
-VALUES(2, 1, 1, '물고기', '옐로우탱', 60000, NULL, SYSDATE, DEFAULT);
+VALUES(1, 3, 3, '물고기', '블루탱', 45000, NULL, SYSDATE, DEFAULT);
+
+INSERT INTO AR_LIVESTOCK 
+VALUES(2, 2, 1, '물고기', '블루탱', 45000, NULL, TO_DATE('2022-09-03', 'YYYY-MM-DD'), DEFAULT);
 
 -- 시퀀스 사용 X 서브쿼리로 제일 큰 TANK_NO + 1  이런 식으로
 SELECT MAX(TANK_NO) FROM AR_TANK WHERE MEMBER_NO = '2' +1
 
+
+SELECT LIVESTOCK_NO, LIVESTOCK_SPECIES , LIVESTOCK_NM 
+, LIVESTOCK_PRICE, LIVESTOCK_GENDER , TO_CHAR(DATE_OF_PURCHASE, 'YYYY-MM-DD') 
+FROM AR_LIVESTOCK
+WHERE MEMBER_NO = 1 AND TANK_NO = 1 AND LIFE_OR_DIE_FL = 'L';
+
+SELECT MAX(LIVESTOCK_NO)
+		FROM AR_LIVESTOCK
+		WHERE MEMBER_NO = 1
+		AND TANK_NO = 1;
+
+SELECT MAX(LIVESTOCK_NO)
+		FROM AR_LIVESTOCK
+		WHERE MEMBER_NO = 1 AND TANK_NO = 1;
 ------------------------------------------------------------------------------
 
 -- 물성치 테이블 생성
@@ -116,7 +145,10 @@ INSERT INTO AR_TODO_LIST VALUES(3, 1, 2, '어항 환수하기', DEFAULT, DEFAULT
 
 
 
-
+-- 어항 정보 수정
+UPDATE AR_TANK SET
+TANK_NAME  = '유저일의 어항1'
+WHERE TANK_NO = 1 AND MEMBER_NO = 1;
 
 
 
